@@ -1,3 +1,26 @@
+# Email Agent (example)
+
+This is a small example that receives webhook payloads and forwards them to an agent for an email-style reply.
+
+Quick start (development, with mocks):
+
+1. Create and activate a Python virtualenv
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+2. Run the app
+
+```powershell
+python main.py
+```
+
+Notes:
+- If `agentmail` and related packages are not installed, the script uses local stubs so you can test the Flask webhook flow.
+- To enable ngrok tunneling install `pyngrok` and set environment variable `WEBHOOK_DOMAIN` if needed.
 # Email Agent Example
 
 Build an agent that autonomously replies to incoming emails.
