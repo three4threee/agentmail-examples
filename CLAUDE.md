@@ -24,6 +24,18 @@ Every template folder is also meant to be pulled out standalone via `npx degit a
 - Every example needs `AGENTMAIL_API_KEY` (from console.agentmail.to) and `ANTHROPIC_API_KEY` (or `OPENAI_API_KEY` for the few OpenAI-based ones) at minimum — check the specific `.env.example` for template-specific vars (e.g. `USER_EMAIL`, scheduling windows, `POLL_INTERVAL_SECONDS`).
 - There is no lint/format/test command to run — verify changes by actually running the agent against a real AgentMail inbox.
 
+## Environment variables
+
+Every example loads secrets from a local, gitignored `.env` via `dotenv`/`python-dotenv`. There's no single `.env.example` to point to for the whole repo — `email-agent`, `sales-agent`, `dinner-agent`, and `github-maintainer-agent` don't ship a `.env.example` at all; their README documents the `.env` contents inline instead. These recur across most examples:
+
+- `AGENTMAIL_API_KEY` — from console.agentmail.to. Required by every example.
+- `ANTHROPIC_API_KEY` + `ANTHROPIC_MODEL` — required by the **Templates** category (and their `agentmail-*` duplicates); each pins its own default model.
+- `OPENAI_API_KEY` — required by **Getting Started**, **Advanced**, and every **single-language agent example** — all of these are OpenAI-based (`openai`, `langchain_openai`, or the `agents`/OpenAI Agents SDK), not Claude-based. Check imports before assuming the LLM provider; Templates are the Claude-based ones, not the exception.
+- `POLL_INTERVAL_SECONDS` — polling cadence (default ~10s) for polling-based examples (Templates + single-language examples).
+- `USER_EMAIL` / `USER_NAME` — the human the agent represents; most templates cc this address on outgoing replies.
+- `INBOX_USERNAME`, `WEBHOOK_DOMAIN`, `NGROK_AUTHTOKEN` — only in the four **Advanced** examples, which run a local Flask server behind an ngrok tunnel and register a real AgentMail webhook instead of polling.
+- Everything else (`TIMEZONE`, `COMPANY_NAME`, `SLACK_WEBHOOK_*`, `AUTO_APPROVE_LIMIT`, `CDP_API_KEY`/`WALLET_ADDRESS`, scheduling windows, etc.) is template-specific business configuration — read the specific `.env.example` (or README, for the four exceptions above) rather than guessing.
+
 ## Core architecture pattern
 
 Nearly every template and advanced example follows the same shape, split across a handful of files:
